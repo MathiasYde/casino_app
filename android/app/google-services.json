@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "603982472173",
+    "project_id": "casino-app-c9433",
+    "storage_bucket": "casino-app-c9433.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603982472173:android:9232e7d676e3d5fa95bde4",
+        "android_client_info": {
+          "package_name": "com.mathiasyde.casinoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "603982472173-d1efidm4pnsvi0pad97iog7bn2t1idg2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlNu-62VkRuGTqeKE45rqrSxYDz6Y6M5w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "603982472173-d1efidm4pnsvi0pad97iog7bn2t1idg2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
