@@ -8,7 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const App());
+  runApp(App());
 }
 
 class App extends ConsumerWidget {

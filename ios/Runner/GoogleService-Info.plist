@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>603982472173-oob8pt8ca552rvkgvdbkq8fhio57ksll.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.603982472173-oob8pt8ca552rvkgvdbkq8fhio57ksll</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDnyVhoXvrast5WFDFKJEi5BwtUVYTSqy8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>603982472173</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.casinoApp</string>
+	<key>PROJECT_ID</key>
+	<string>casino-app-c9433</string>
+	<key>STORAGE_BUCKET</key>
+	<string>casino-app-c9433.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:603982472173:ios:fa5472e5271a812295bde4</string>
+</dict>
+</plist>
