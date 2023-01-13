@@ -19,6 +19,7 @@ dependencies:
   firebase_core: ^2.4.1
   firebase_core_platform_interface: ^4.5.1
   firebase_auth: ^4.2.5
+  cloud_firestore:
 
   # Riverpod
   hooks_riverpod: ^2.1.3
