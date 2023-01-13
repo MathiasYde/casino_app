@@ -14,8 +14,8 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-
-  form_validator: ">=0.1.1 <2.0.0"
+  
+  form_validator:
 
   # Firebase
   firebase_core: ^2.4.1
