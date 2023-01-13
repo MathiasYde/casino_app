@@ -1,118 +1,99 @@
 import 'package:casino_app/pages/signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
+import 'package:form_validator/form_validator.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginPage> createState() => LoginPageState();
 }
 
-String _errorCode = "";
-TextEditingController _emailController = TextEditingController();
-TextEditingController _passwordController = TextEditingController();
+class LoginPageState extends State<LoginPage> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-class _LoginPageState extends State<LoginPage> {
-  Future<void> _checkLogin({email, password}) async {
-    try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == "user-not-found") {
-        setState(() {
-          _errorCode = "No user found for that email";
-        });
-      } else if (e.code == "wrong-password") {
-        setState(() {
-          _errorCode = "Wrong password or email";
-        });
-      } else {
-        setState(() {
-          _errorCode = "there was an error";
-        });
-      }
-    }
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Login Page"),
-        ),
-        body: Container(
-          padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
+      appBar: AppBar(
+        title: const Text("Login Page"),
+      ),
+      body: Form(
+        key: formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 50,
+              const Text("Sign in page", style: TextStyle(fontSize: 48)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+              Column(
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(hintText: "Enter email"),
+                    validator: ValidationBuilder().email().build(),
+                    controller: emailController,
+                  ),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+                  TextFormField(
+                    decoration:
+                        const InputDecoration(hintText: "Enter password"),
+                    validator:
+                        ValidationBuilder().minLength(6).maxLength(27).build(),
+                    controller: passwordController,
+                  ),
+                ],
               ),
-              InputText(
-                title: "E-mail:",
-                textFieldController: _emailController,
+              const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+              ElevatedButton(
+                onPressed: () async {
+                  if (!formKey.currentState!.validate()) {
+                    return;
+                  }
+
+                  final email = emailController.text;
+                  final password = passwordController.text;
+
+                  try {
+                    await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: email,
+                      password: password,
+                    );
+                  } on FirebaseAuthException catch (e) {
+                    SnackBar snackBar = SnackBar(content: Text("${e.message}"));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } catch (e) {
+                    SnackBar snackBar = SnackBar(content: Text("$e"));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: const Text("Login"),
               ),
-              const SizedBox(
-                height: 25,
-              ),
-              InputText(
-                title: "Password:",
-                hideText: true,
-                textFieldController: _passwordController,
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Text(_errorCode),
               TextButton(
-                  onPressed: (() => _checkLogin(
-                      email: _emailController.text,
-                      password: _passwordController.text)),
-                  child: const Text("Login")),
-              TextButton(
-                  onPressed: (() => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => const SignupPage())))),
-                  child: const Text("Sign up")),
+                onPressed: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) {
+                    return const SignupPage();
+                  }));
+                },
+                child: const Text("Don't have an account?"),
+              )
             ],
           ),
-        ));
-  }
-}
-
-class InputText extends StatelessWidget {
-  const InputText(
-      {super.key,
-      required this.title,
-      this.hideText = false,
-      required this.textFieldController});
-
-  final String title;
-  final bool hideText;
-  final TextEditingController textFieldController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title),
-        TextField(
-          controller: textFieldController,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-            ),
-            focusColor: Colors.black,
-          ),
-          style: const TextStyle(
-            color: Colors.white,
-          ),
-          obscureText: hideText,
         ),
-      ],
+      ),
     );
   }
 }
