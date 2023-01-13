@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 part "user.freezed.dart";
 part "user.g.dart";
 
+// build configuration files with: flutter pub run build_runner build
+
 @freezed
 class User with _$User {
   const factory User({
