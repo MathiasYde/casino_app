@@ -14,20 +14,20 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-
+  
   form_validator:
 
   # Firebase
   firebase_core: ^2.4.1
   firebase_core_platform_interface: ^4.5.1
   firebase_auth: ^4.2.5
+  cloud_firestore: ^4.3.1
 
   # Riverpod
   hooks_riverpod: ^2.1.3
 
   # Freezed
   freezed_annotation: ^2.2.0
-  cloud_firestore: ^4.3.1
 
 dev_dependencies:
   flutter_test:
