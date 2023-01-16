@@ -1,3 +1,4 @@
+import 'package:casino_app/datamodels/user.dart';
 import 'package:casino_app/pages/error_page.dart';
 import 'package:casino_app/pages/home_page.dart';
 import 'package:casino_app/pages/login_page.dart';
@@ -17,7 +18,7 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final firebaseUser = ref.watch(firebaseUserProvider);
+    final user = ref.watch(userProvider);
 
     return MaterialApp(
       title: "Casino App",
@@ -25,7 +26,7 @@ class App extends ConsumerWidget {
         brightness: Brightness.dark,
         primarySwatch: Colors.blue,
       ),
-      home: firebaseUser.when(
+      home: user.when(
         data: (data) => (data == null) ? const LoginPage() : const HomePage(),
         error: (error, stackTrace) => ErrorPage(error: error),
         loading: () =>
