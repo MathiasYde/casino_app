@@ -21,6 +21,7 @@ class App extends ConsumerWidget {
     final user = ref.watch(userProvider);
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "Casino App",
       theme: ThemeData(
         brightness: Brightness.dark,
