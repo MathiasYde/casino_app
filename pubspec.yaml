@@ -43,4 +43,7 @@ flutter:
   uses-material-design: true
 
   assets:
-   - assets/images/
+   - assets/images/blackjack.png
+   - assets/images/poker.png
+   - assets/images/slotmachine.png
+   - assets/images/roulette.png
