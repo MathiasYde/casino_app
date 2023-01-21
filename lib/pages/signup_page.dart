@@ -37,111 +37,132 @@ class SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Signup Page"),
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.red, Colors.yellow],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
       ),
-      body: Form(
-        key: formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            const Text("Sign up", style: TextStyle(fontSize: 48)),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Column(
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(hintText: "Enter username"),
-                  validator:
-                      ValidationBuilder().minLength(3).maxLength(27).build(),
-                  controller: usernameController,
-                ),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                TextFormField(
-                  decoration: const InputDecoration(hintText: "Enter email"),
-                  validator: ValidationBuilder().email().build(),
-                  controller: emailController,
-                ),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Enter password",
-                    suffixIcon: IconButton(
-                        onPressed: (() => setState(() {
-                              _showPassword = !_showPassword;
-                            })),
-                        icon: Icon(_showPassword
-                            ? Icons.visibility
-                            : Icons.visibility_off)),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text("Signup Page"),
+          backgroundColor: const Color.fromARGB(100, 0, 0, 0),
+          shadowColor: Colors.transparent,
+        ),
+        body: Form(
+          key: formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              const Text("Sign up", style: TextStyle(fontSize: 48)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+              Column(
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(
+                        hintText: "Enter username",
+                        filled: true,
+                        fillColor: Colors.grey),
+                    validator:
+                        ValidationBuilder().minLength(3).maxLength(27).build(),
+                    controller: usernameController,
                   ),
-                  validator:
-                      ValidationBuilder().minLength(6).maxLength(27).build(),
-                  controller: passwordController,
-                  obscureText: _showPassword,
-                ),
-              ],
-            ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            ElevatedButton(
-              onPressed: () async {
-                if (!formKey.currentState!.validate()) {
-                  return;
-                }
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                        hintText: "Enter email",
+                        filled: true,
+                        fillColor: Colors.grey),
+                    validator: ValidationBuilder().email().build(),
+                    controller: emailController,
+                  ),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey,
+                      hintText: "Enter password",
+                      suffixIcon: IconButton(
+                          onPressed: (() => setState(() {
+                                _showPassword = !_showPassword;
+                              })),
+                          icon: Icon(_showPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off)),
+                    ),
+                    validator:
+                        ValidationBuilder().minLength(6).maxLength(27).build(),
+                    controller: passwordController,
+                    obscureText: _showPassword,
+                  ),
+                ],
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+              ElevatedButton(
+                onPressed: () async {
+                  if (!formKey.currentState!.validate()) {
+                    return;
+                  }
 
-                final username = usernameController.text;
-                final email = emailController.text;
-                final password = passwordController.text;
+                  final username = usernameController.text;
+                  final email = emailController.text;
+                  final password = passwordController.text;
 
-                try {
-                  final credential = await FirebaseAuth.instance
-                      .createUserWithEmailAndPassword(
-                    email: email,
-                    password: password,
-                  );
+                  try {
+                    final credential = await FirebaseAuth.instance
+                        .createUserWithEmailAndPassword(
+                      email: email,
+                      password: password,
+                    );
 
-                  // create user in firestore
-                  final userData = <String, dynamic>{
-                    "username": username,
-                    "balance": 0
-                  };
+                    // create user in firestore
+                    final userData = <String, dynamic>{
+                      "username": username,
+                      "balance": 0
+                    };
 
-                  await FirebaseFirestore.instance
-                      .collection("users")
-                      .doc(credential.user!.uid)
-                      .set(userData);
+                    await FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(credential.user!.uid)
+                        .set(userData);
 
-                  // redirect to home page
-                  // TODO(mathias): could this fail and then the user is stuck on the signup page?
-                  if (!mounted) return;
+                    // redirect to home page
+                    // TODO(mathias): could this fail and then the user is stuck on the signup page?
+                    if (!mounted) return;
 
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return const HomePage();
+                      }),
+                    );
+                  } on FirebaseAuthException catch (e) {
+                    SnackBar snackBar = SnackBar(content: Text("${e.message}"));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } catch (e) {
+                    SnackBar snackBar = SnackBar(content: Text("$e"));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: const Text("Sign up"),
+              ),
+              TextButton(
+                onPressed: () {
                   FocusManager.instance.primaryFocus?.unfocus();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) {
-                      return const HomePage();
-                    }),
-                  );
-                } on FirebaseAuthException catch (e) {
-                  SnackBar snackBar = SnackBar(content: Text("${e.message}"));
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                } catch (e) {
-                  SnackBar snackBar = SnackBar(content: Text("$e"));
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }
-              },
-              child: const Text("Sign up"),
-            ),
-            TextButton(
-              onPressed: () {
-                FocusManager.instance.primaryFocus?.unfocus();
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) {
-                  return const LoginPage();
-                }));
-              },
-              child: const Text("Already have an account?"),
-            )
-          ]),
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) {
+                    return const LoginPage();
+                  }));
+                },
+                child: const Text("Already have an account?"),
+              )
+            ]),
+          ),
         ),
       ),
     );
