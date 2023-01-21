@@ -1,4 +1,3 @@
-import 'package:casino_app/datamodels/user.dart';
 import 'package:casino_app/pages/error_page.dart';
 import 'package:casino_app/pages/home_page.dart';
 import 'package:casino_app/pages/login_page.dart';
@@ -18,7 +17,7 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider);
+    final user = ref.watch(firebaseUserProvider);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

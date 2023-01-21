@@ -2,10 +2,8 @@ import 'package:casino_app/pages/home_page.dart';
 import 'package:casino_app/pages/login_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -21,12 +19,20 @@ class SignupPageState extends State<SignupPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  late bool _showPassword;
+
   @override
   void dispose() {
     super.dispose();
     usernameController.dispose();
     emailController.dispose();
     passwordController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _showPassword = true;
   }
 
   @override
@@ -58,10 +64,20 @@ class SignupPageState extends State<SignupPage> {
                 ),
                 const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
                 TextFormField(
-                  decoration: const InputDecoration(hintText: "Enter password"),
+                  decoration: InputDecoration(
+                    hintText: "Enter password",
+                    suffixIcon: IconButton(
+                        onPressed: (() => setState(() {
+                              _showPassword = !_showPassword;
+                            })),
+                        icon: Icon(_showPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off)),
+                  ),
                   validator:
                       ValidationBuilder().minLength(6).maxLength(27).build(),
                   controller: passwordController,
+                  obscureText: _showPassword,
                 ),
               ],
             ),

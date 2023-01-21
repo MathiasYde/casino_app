@@ -13,6 +13,8 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  late bool _showPassword;
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -21,6 +23,12 @@ class LoginPageState extends State<LoginPage> {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _showPassword = true;
   }
 
   void _signin() async {
@@ -83,16 +91,24 @@ class LoginPageState extends State<LoginPage> {
                     ),
                     const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
                     TextFormField(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: "Enter password",
                         filled: true,
                         fillColor: Colors.grey,
+                        suffixIcon: IconButton(
+                            onPressed: (() => setState(() {
+                                  _showPassword = !_showPassword;
+                                })),
+                            icon: Icon(_showPassword
+                                ? Icons.visibility
+                                : Icons.visibility_off)),
                       ),
                       validator: ValidationBuilder()
                           .minLength(6)
                           .maxLength(27)
                           .build(),
                       controller: passwordController,
+                      obscureText: _showPassword,
                     ),
                   ],
                 ),
