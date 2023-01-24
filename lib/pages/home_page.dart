@@ -60,11 +60,23 @@ class HomePage extends ConsumerWidget {
                   mainAxisSpacing: 16.0),
               children: [
                 buildGamePageEntry(
-                    "Slotmachine", const SlotmachinePage(), null),
-                buildGamePageEntry("Roulette", const RoulettePage(), null),
-                buildGamePageEntry("Blackjack", const BlackjackPage(), null,
+                    "Slotmachine",
+                    const SlotmachinePage(),
+                    const Image(
+                        image: AssetImage("assets/images/slotmachine.png"))),
+                buildGamePageEntry(
+                    "Roulette",
+                    const RoulettePage(),
+                    const Image(
+                        image: AssetImage("assets/images/roulette.png"))),
+                buildGamePageEntry(
+                    "Blackjack",
+                    const BlackjackPage(),
+                    const Image(
+                        image: AssetImage("assets/images/blackjack.png")),
                     enabled: false),
-                buildGamePageEntry("Poker", const PokerPage(), null,
+                buildGamePageEntry("Poker", const PokerPage(),
+                    const Image(image: AssetImage("assets/images/poker.png")),
                     enabled: false),
               ],
             ),
