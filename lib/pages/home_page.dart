@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -17,25 +18,6 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     User user = ref.watch(userProvider).value ?? const User();
 
-    Widget buildGamePageEntry(String title, Widget page, Widget? thumbnail,
-        {bool enabled = true}) {
-      return InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => page,
-            ),
-          );
-        },
-        child: thumbnail ??
-            Container(
-              color: enabled ? Colors.red : Colors.grey,
-              child: Text(title),
-            ),
-      );
-    }
-
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -47,58 +29,114 @@ class HomePage extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          leading: const Padding(
-            padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
-            child: Text("Casino Kidz"),
+          leading: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+            child: Text(
+              "Casino Kidz",
+              style: GoogleFonts.plaster(fontSize: 11, color: Colors.yellow),
+            ),
           ),
           backgroundColor: const Color.fromARGB(100, 0, 0, 0),
           shadowColor: Colors.transparent,
           title: Column(
-            children: [const Text("Balance:"), Text("${user.balance}")],
+            children: [
+              Text(
+                "Balance:",
+                style: GoogleFonts.blackHanSans(),
+              ),
+              Text(
+                "${user.balance}",
+                style: GoogleFonts.blackHanSans(),
+              )
+            ],
           ),
           actions: [
             TextButton(
               onPressed: () {
-                FirebaseAuth.instance.signOut();
+                firebase_auth.FirebaseAuth.instance.signOut();
               },
-              child: const Text("Log Out"),
+              child: Text(
+                "Log Out",
+                style:
+                    GoogleFonts.blackHanSans(color: Colors.white, fontSize: 18),
+              ),
             ),
           ],
         ),
-        body: Column(
+        body: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Padding(padding: EdgeInsets.symmetric(vertical: 16.0)),
+              const SizedBox(
+                height: 50,
+              ),
+              Text(
+                "Most popular games",
+                style: GoogleFonts.blackHanSans(fontSize: 32),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 16.0)),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Wrap(
+                  children: const [
+                    GameEntry(
+                        photo: "slotmachine.png",
+                        title: "Slotmachine",
+                        page: SlotmachinePage()),
+                    GameEntry(
+                        photo: "roulette.png",
+                        title: "Roulette",
+                        page: RoulettePage()),
+                    GameEntry(
+                        photo: "blackjack.png",
+                        title: "Blackjack",
+                        page: BlackjackPage()),
+                    GameEntry(
+                      photo: "poker.png",
+                      title: "Poker",
+                      page: PokerPage(),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class GameEntry extends StatelessWidget {
+  const GameEntry(
+      {super.key,
+      required this.photo,
+      required this.title,
+      required this.page});
+
+  final String photo;
+  final String title;
+  final Widget page;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () => Navigator.push(
+          context, MaterialPageRoute(builder: ((context) => page))),
+      child: SizedBox(
+        width: 150,
+        child: Column(
           children: [
-            const Padding(padding: EdgeInsets.symmetric(vertical: 16.0)),
-            const Text("Most popular games", style: TextStyle(fontSize: 32.0)),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 16.0)),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: GridView(
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 16.0,
-                    mainAxisSpacing: 16.0),
-                children: [
-                  buildGamePageEntry(
-                      "Slotmachine",
-                      const SlotmachinePage(),
-                      const Image(
-                          image: AssetImage("assets/images/slotmachine.png"))),
-                  buildGamePageEntry(
-                      "Roulette",
-                      const RoulettePage(),
-                      const Image(
-                          image: AssetImage("assets/images/roulette.png"))),
-                  buildGamePageEntry(
-                      "Blackjack",
-                      const BlackjackPage(),
-                      const Image(
-                          image: AssetImage("assets/images/blackjack.png")),
-                      enabled: false),
-                  buildGamePageEntry("Poker", const PokerPage(),
-                      const Image(image: AssetImage("assets/images/poker.png")),
-                      enabled: false),
-                ],
+            Image.asset("assets/images/$photo"),
+            Text(
+              title,
+              style: GoogleFonts.blackHanSans(
+                color: Colors.white,
+                fontSize: 20,
               ),
             ),
           ],
