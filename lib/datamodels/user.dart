@@ -12,8 +12,8 @@ part "user.g.dart";
 @freezed
 class User with _$User {
   const factory User({
-    required String username,
-    required int balance,
+    @Default("") String username,
+    @Default(0) int balance,
   }) = _User;
 
   factory User.fromJson(Map<String, Object?> json) => _$UserFromJson(json);

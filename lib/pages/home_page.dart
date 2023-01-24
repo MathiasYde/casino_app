@@ -1,5 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,7 +15,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var user = ref.watch(userProvider).value!;
+    User user = ref.watch(userProvider).value ?? const User();
 
     Widget buildGamePageEntry(String title, Widget page, Widget? thumbnail,
         {bool enabled = true}) {
@@ -43,7 +42,7 @@ class HomePage extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () {
-              FirebaseAuth.instance.signOut();
+              firebase_auth.FirebaseAuth.instance.signOut();
             },
             child: Text("${user.balance}"),
           ),
