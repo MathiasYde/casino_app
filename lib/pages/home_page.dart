@@ -37,55 +37,73 @@ class HomePage extends ConsumerWidget {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Welcome ${user.username}"),
-        actions: [
-          TextButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-            },
-            child: Text("${user.balance}"),
-          ),
-        ],
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.red, Colors.yellow],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
       ),
-      body: Column(
-        children: [
-          const Padding(padding: EdgeInsets.symmetric(vertical: 16.0)),
-          const Text("Most popular games", style: TextStyle(fontSize: 32.0)),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 16.0)),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: GridView(
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0),
-              children: [
-                buildGamePageEntry(
-                    "Slotmachine",
-                    const SlotmachinePage(),
-                    const Image(
-                        image: AssetImage("assets/images/slotmachine.png"))),
-                buildGamePageEntry(
-                    "Roulette",
-                    const RoulettePage(),
-                    const Image(
-                        image: AssetImage("assets/images/roulette.png"))),
-                buildGamePageEntry(
-                    "Blackjack",
-                    const BlackjackPage(),
-                    const Image(
-                        image: AssetImage("assets/images/blackjack.png")),
-                    enabled: false),
-                buildGamePageEntry("Poker", const PokerPage(),
-                    const Image(image: AssetImage("assets/images/poker.png")),
-                    enabled: false),
-              ],
-            ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          leading: const Padding(
+            padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
+            child: Text("Casino Kidz"),
           ),
-        ],
+          backgroundColor: const Color.fromARGB(100, 0, 0, 0),
+          shadowColor: Colors.transparent,
+          title: Column(
+            children: [const Text("Balance:"), Text("${user.balance}")],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              },
+              child: const Text("Log Out"),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            const Padding(padding: EdgeInsets.symmetric(vertical: 16.0)),
+            const Text("Most popular games", style: TextStyle(fontSize: 32.0)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 16.0)),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: GridView(
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0),
+                children: [
+                  buildGamePageEntry(
+                      "Slotmachine",
+                      const SlotmachinePage(),
+                      const Image(
+                          image: AssetImage("assets/images/slotmachine.png"))),
+                  buildGamePageEntry(
+                      "Roulette",
+                      const RoulettePage(),
+                      const Image(
+                          image: AssetImage("assets/images/roulette.png"))),
+                  buildGamePageEntry(
+                      "Blackjack",
+                      const BlackjackPage(),
+                      const Image(
+                          image: AssetImage("assets/images/blackjack.png")),
+                      enabled: false),
+                  buildGamePageEntry("Poker", const PokerPage(),
+                      const Image(image: AssetImage("assets/images/poker.png")),
+                      enabled: false),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
