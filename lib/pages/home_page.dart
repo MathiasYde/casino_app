@@ -20,6 +20,33 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     User user = ref.watch(userProvider).value ?? const User();
 
+    // function generator since this is not a reuseable widget
+    Widget _buildGameEntry(
+        String title, String filepath, Widget page, bool enabled) {
+      return TextButton(
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => page))),
+        child: SizedBox(
+          width: 150,
+          child: Column(
+            children: [
+              Image.asset(
+                filepath,
+                width: 100,
+              ),
+              Text(
+                title,
+                style: GoogleFonts.blackHanSans(
+                  color: enabled ? Colors.white : Colors.black,
+                  fontSize: 20,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -80,75 +107,23 @@ class HomePage extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Wrap(
-                  children: const [
-                    GameEntry(
-                      photo: "poker.png",
-                      title: "Poker",
-                      page: PokerPage(),
-                    ),
-                    GameEntry(
-                        photo: "roulette.png",
-                        title: "Roulette",
-                        page: RoulettePage()),
-                    GameEntry(
-                      photo: "blackjack.png",
-                      title: "Blackjack",
-                      page: BlackjackPage(),
-                      activ: false,
-                    ),
-                    GameEntry(
-                      photo: "slotmachine.png",
-                      title: "Slotmachine",
-                      page: SlotmachinePage(),
-                      activ: false,
-                    ),
+                  children: [
+                    _buildGameEntry("Poker", "assets/images/poker.png",
+                        const PokerPage(), false),
+                    _buildGameEntry("Roulette", "assets/images/roulette.png",
+                        const RoulettePage(), false),
+                    _buildGameEntry("Blackjack", "assets/images/blackjack.png",
+                        const BlackjackPage(), false),
+                    _buildGameEntry(
+                        "Slotmachine",
+                        "assets/images/slotmachine.png",
+                        const SlotmachinePage(),
+                        true),
                   ],
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class GameEntry extends StatelessWidget {
-  final bool isTrue = true;
-  const GameEntry({
-    super.key,
-    required this.photo,
-    required this.title,
-    required this.page,
-    this.activ = true,
-  });
-
-  final String photo;
-  final String title;
-  final Widget page;
-  final bool activ;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () => Navigator.push(
-          context, MaterialPageRoute(builder: ((context) => page))),
-      child: SizedBox(
-        width: 150,
-        child: Column(
-          children: [
-            Image.asset(
-              "assets/images/$photo",
-              width: 100,
-            ),
-            Text(
-              title,
-              style: GoogleFonts.blackHanSans(
-                color: activ ? Colors.white : Colors.black,
-                fontSize: 20,
-              ),
-            ),
-          ],
         ),
       ),
     );
