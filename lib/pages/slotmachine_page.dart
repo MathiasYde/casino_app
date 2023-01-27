@@ -12,9 +12,18 @@ class SlotmachinePage extends StatefulWidget {
 
 class SlotmachinePageState extends State<SlotmachinePage>
     with SingleTickerProviderStateMixin {
-  final int _slotsCount = 4;
+  final int _slotsCount = 3;
 
-  List<String> iconFilepaths = [];
+  List<String> iconFilepaths = [
+    "assets/images/slotmachine/banana.png",
+    "assets/images/slotmachine/cherry.png",
+    "assets/images/slotmachine/dollar.png",
+    "assets/images/slotmachine/moon.png",
+    "assets/images/slotmachine/seven.png",
+    "assets/images/slotmachine/star.png",
+    "assets/images/slotmachine/sun.png",
+    "assets/images/slotmachine/watermelon.png",
+  ];
 
   late List<Widget> items;
 
