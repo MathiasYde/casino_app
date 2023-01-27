@@ -1,6 +1,4 @@
-import 'dart:ffi';
-
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:casino_app/widgets/casino_kidz_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,7 +19,7 @@ class HomePage extends ConsumerWidget {
     User user = ref.watch(userProvider).value ?? const User();
 
     // function generator since this is not a reuseable widget
-    Widget _buildGameEntry(
+    Widget buildGameEntry(
         String title, String filepath, Widget page, bool enabled) {
       return TextButton(
         onPressed: () => Navigator.push(
@@ -57,37 +55,7 @@ class HomePage extends ConsumerWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          leading: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-              child: Image.asset("assets/images/logo.png")),
-          backgroundColor: const Color.fromARGB(100, 0, 0, 0),
-          shadowColor: Colors.transparent,
-          title: Column(
-            children: [
-              Text(
-                "Balance:",
-                style: GoogleFonts.blackHanSans(),
-              ),
-              Text(
-                "${user.balance}",
-                style: GoogleFonts.blackHanSans(),
-              )
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                firebase_auth.FirebaseAuth.instance.signOut();
-              },
-              child: Text(
-                "Log Out",
-                style:
-                    GoogleFonts.blackHanSans(color: Colors.white, fontSize: 18),
-              ),
-            ),
-          ],
-        ),
+        appBar: const CasinoKidzAppBar(),
         body: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,17 +76,30 @@ class HomePage extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Wrap(
                   children: [
-                    _buildGameEntry("Poker", "assets/images/poker.png",
-                        const PokerPage(), false),
-                    _buildGameEntry("Roulette", "assets/images/roulette.png",
-                        const RoulettePage(), false),
-                    _buildGameEntry("Blackjack", "assets/images/blackjack.png",
-                        const BlackjackPage(), false),
-                    _buildGameEntry(
-                        "Slotmachine",
-                        "assets/images/slotmachine.png",
-                        const SlotmachinePage(),
-                        true),
+                    buildGameEntry(
+                      "Poker",
+                      "assets/images/poker.png",
+                      const PokerPage(),
+                      false,
+                    ),
+                    buildGameEntry(
+                      "Roulette",
+                      "assets/images/roulette.png",
+                      const RoulettePage(),
+                      false,
+                    ),
+                    buildGameEntry(
+                      "Blackjack",
+                      "assets/images/blackjack.png",
+                      const BlackjackPage(),
+                      false,
+                    ),
+                    buildGameEntry(
+                      "Slotmachine",
+                      "assets/images/slotmachine.png",
+                      const SlotmachinePage(),
+                      true,
+                    ),
                   ],
                 ),
               ),

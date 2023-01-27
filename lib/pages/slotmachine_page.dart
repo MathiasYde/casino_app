@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:casino_app/widgets/casino_kidz_appbar.dart';
 import 'package:casino_app/widgets/spin_button.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SlotmachinePage extends StatefulWidget {
   const SlotmachinePage({Key? key}) : super(key: key);
@@ -39,6 +41,7 @@ class SlotmachinePageState extends State<SlotmachinePage>
         iconFilepaths.length,
         (index) => Image(
               image: AssetImage(iconFilepaths[index]),
+              width: 75,
             ));
 
     _reelKeys = List.generate(
@@ -87,27 +90,66 @@ class SlotmachinePageState extends State<SlotmachinePage>
     return WillPopScope(
       onWillPop: () async => !_isSpinning,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Slotmachine Page"),
-        ),
+        backgroundColor: Colors.transparent,
+        appBar: const CasinoKidzAppBar(),
         body: Column(
           children: [
+            Container(
+              margin: const EdgeInsets.fromLTRB(0, 50, 0, 50),
+              child: Text(
+                "Slot Machine",
+                style: GoogleFonts.blackHanSans(fontSize: 40),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 for (int i = 0; i < _slotsCount; i++)
                   Expanded(
                     child: Container(
-                        height: 200,
-                        child: SlotMachineReel(
-                          key: _reelKeys[i],
-                          reelItems: items,
-                          offAxisFraction: i / _slotsCount - 0.5,
-                        )),
+                      decoration: const BoxDecoration(color: Colors.white),
+                      height: 200,
+                      child: Stack(
+                        children: [
+                          SlotMachineReel(
+                            key: _reelKeys[i],
+                            reelItems: items,
+                            offAxisFraction: i / _slotsCount - 0.5,
+                          ),
+                          ColorFiltered(
+                            colorFilter: const ColorFilter.mode(
+                              Colors.black,
+                              BlendMode.srcOut,
+                            ),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Container(
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black,
+                                    backgroundBlendMode: BlendMode.dstOut,
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    height: 175,
+                                    width: 75,
+                                    decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius:
+                                            BorderRadius.circular(25)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
               ],
             ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             SpinButton(
               onPressed: spin,
             ),
