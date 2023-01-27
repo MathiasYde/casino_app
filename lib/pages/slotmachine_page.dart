@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:casino_app/widgets/spin_button.dart';
 import 'package:flutter/material.dart';
 
 class SlotmachinePage extends StatefulWidget {
@@ -12,7 +13,7 @@ class SlotmachinePage extends StatefulWidget {
 
 class SlotmachinePageState extends State<SlotmachinePage>
     with SingleTickerProviderStateMixin {
-  final int _slotsCount = 3;
+  final int _slotsCount = 4;
 
   List<String> iconFilepaths = [
     "assets/images/slotmachine/banana.png",
@@ -83,33 +84,35 @@ class SlotmachinePageState extends State<SlotmachinePage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Slotmachine Page"),
-      ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              for (int i = 0; i < _slotsCount; i++)
-                Expanded(
-                  child: Container(
-                      height: 200,
-                      child: SlotMachineReel(
-                        key: _reelKeys[i],
-                        reelItems: items,
-                        offAxisFraction: i / _slotsCount - 0.5,
-                      )),
-                ),
-            ],
-          ),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-          ElevatedButton(
-            onPressed: spin,
-            child: const Text("Spin"),
-          ),
-        ],
+    return WillPopScope(
+      onWillPop: () async => !_isSpinning,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Slotmachine Page"),
+        ),
+        body: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (int i = 0; i < _slotsCount; i++)
+                  Expanded(
+                    child: Container(
+                        height: 200,
+                        child: SlotMachineReel(
+                          key: _reelKeys[i],
+                          reelItems: items,
+                          offAxisFraction: i / _slotsCount - 0.5,
+                        )),
+                  ),
+              ],
+            ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+            SpinButton(
+              onPressed: spin,
+            ),
+          ],
+        ),
       ),
     );
   }
