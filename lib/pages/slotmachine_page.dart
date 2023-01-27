@@ -27,15 +27,12 @@ class SlotmachinePageState extends State<SlotmachinePage>
 
   late List<Widget> items;
 
-  late List<int> _selectedItemIndicies;
-
   late List<GlobalKey> _reelKeys;
   bool _isSpinning = false;
 
   @override
   void initState() {
     super.initState();
-    _selectedItemIndicies = List.generate(_slotsCount, (index) => 0);
 
     items = List.generate(
         iconFilepaths.length,
