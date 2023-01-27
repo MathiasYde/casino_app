@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,12 +32,8 @@ class HomePage extends ConsumerWidget {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           leading: Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-            child: Text(
-              "Casino Kidz",
-              style: GoogleFonts.plaster(fontSize: 11, color: Colors.yellow),
-            ),
-          ),
+              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+              child: Image.asset("assets/images/logo.png")),
           backgroundColor: const Color.fromARGB(100, 0, 0, 0),
           shadowColor: Colors.transparent,
           title: Column(
@@ -84,22 +82,26 @@ class HomePage extends ConsumerWidget {
                 child: Wrap(
                   children: const [
                     GameEntry(
-                        photo: "slotmachine.png",
-                        title: "Slotmachine",
-                        page: SlotmachinePage()),
+                      photo: "poker.png",
+                      title: "Poker",
+                      page: PokerPage(),
+                    ),
                     GameEntry(
                         photo: "roulette.png",
                         title: "Roulette",
                         page: RoulettePage()),
                     GameEntry(
-                        photo: "blackjack.png",
-                        title: "Blackjack",
-                        page: BlackjackPage()),
+                      photo: "blackjack.png",
+                      title: "Blackjack",
+                      page: BlackjackPage(),
+                      activ: false,
+                    ),
                     GameEntry(
-                      photo: "poker.png",
-                      title: "Poker",
-                      page: PokerPage(),
-                    )
+                      photo: "slotmachine.png",
+                      title: "Slotmachine",
+                      page: SlotmachinePage(),
+                      activ: false,
+                    ),
                   ],
                 ),
               ),
@@ -112,15 +114,19 @@ class HomePage extends ConsumerWidget {
 }
 
 class GameEntry extends StatelessWidget {
-  const GameEntry(
-      {super.key,
-      required this.photo,
-      required this.title,
-      required this.page});
+  final bool isTrue = true;
+  const GameEntry({
+    super.key,
+    required this.photo,
+    required this.title,
+    required this.page,
+    this.activ = true,
+  });
 
   final String photo;
   final String title;
   final Widget page;
+  final bool activ;
 
   @override
   Widget build(BuildContext context) {
@@ -131,11 +137,14 @@ class GameEntry extends StatelessWidget {
         width: 150,
         child: Column(
           children: [
-            Image.asset("assets/images/$photo"),
+            Image.asset(
+              "assets/images/$photo",
+              width: 100,
+            ),
             Text(
               title,
               style: GoogleFonts.blackHanSans(
-                color: Colors.white,
+                color: activ ? Colors.white : Colors.black,
                 fontSize: 20,
               ),
             ),

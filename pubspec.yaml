@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  
+
   form_validator:
 
   # Firebase
@@ -44,7 +44,4 @@ flutter:
   uses-material-design: true
 
   assets:
-   - assets/images/blackjack.png
-   - assets/images/poker.png
-   - assets/images/slotmachine.png
-   - assets/images/roulette.png
+    - assets/images/
