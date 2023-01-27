@@ -73,6 +73,14 @@ class SlotmachinePageState extends State<SlotmachinePage>
       reelState.stopSpin();
     }
 
+    List<int> results = List.from(_reelKeys.map((e) {
+      SlotMachineReelState reelState = e.currentState as SlotMachineReelState;
+      return reelState.counter % items.length;
+    }));
+
+    bool isWin = results.toSet().length == 1;
+    print("is win $isWin");
+
     _isSpinning = false;
   }
 
