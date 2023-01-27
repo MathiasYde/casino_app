@@ -30,6 +30,7 @@ class SlotmachinePageState extends State<SlotmachinePage>
   late List<int> _selectedItemIndicies;
 
   late List<GlobalKey> _reelKeys;
+  bool _isSpinning = false;
 
   @override
   void initState() {
@@ -52,6 +53,9 @@ class SlotmachinePageState extends State<SlotmachinePage>
   }
 
   void spin() async {
+    if (_isSpinning) return;
+    _isSpinning = true;
+
     for (GlobalKey reelKey in _reelKeys) {
       SlotMachineReelState reelState =
           reelKey.currentState as SlotMachineReelState;
@@ -68,6 +72,8 @@ class SlotmachinePageState extends State<SlotmachinePage>
 
       reelState.stopSpin();
     }
+
+    _isSpinning = false;
   }
 
   @override
