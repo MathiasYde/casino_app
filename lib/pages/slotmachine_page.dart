@@ -89,71 +89,82 @@ class SlotmachinePageState extends State<SlotmachinePage>
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => !_isSpinning,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: const CasinoKidzAppBar(),
-        body: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 50, 0, 50),
-              child: Text(
-                "Slot Machine",
-                style: GoogleFonts.blackHanSans(fontSize: 40),
+      child: Container(
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.red,
+            Colors.yellow,
+          ],
+        )),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: const CasinoKidzAppBar(),
+          body: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 50, 0, 50),
+                child: Text(
+                  "Slot Machine",
+                  style: GoogleFonts.blackHanSans(fontSize: 40),
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (int i = 0; i < _slotsCount; i++)
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(color: Colors.white),
-                      height: 200,
-                      child: Stack(
-                        children: [
-                          SlotMachineReel(
-                            key: _reelKeys[i],
-                            reelItems: items,
-                            offAxisFraction: i / _slotsCount - 0.5,
-                          ),
-                          ColorFiltered(
-                            colorFilter: const ColorFilter.mode(
-                              Colors.black,
-                              BlendMode.srcOut,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (int i = 0; i < _slotsCount; i++)
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(color: Colors.white),
+                        height: 200,
+                        child: Stack(
+                          children: [
+                            SlotMachineReel(
+                              key: _reelKeys[i],
+                              reelItems: items,
+                              offAxisFraction: i / _slotsCount - 0.5,
                             ),
-                            child: Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                Container(
-                                  decoration: const BoxDecoration(
-                                    color: Colors.black,
-                                    backgroundBlendMode: BlendMode.dstOut,
+                            ColorFiltered(
+                              colorFilter: const ColorFilter.mode(
+                                Color.fromARGB(255, 255, 156, 7),
+                                BlendMode.srcOut,
+                              ),
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      color: Colors.black,
+                                      backgroundBlendMode: BlendMode.dstOut,
+                                    ),
                                   ),
-                                ),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    height: 175,
-                                    width: 75,
-                                    decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Container(
+                                      height: 175,
+                                      width: 75,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-              ],
-            ),
-            SpinButton(
-              onPressed: spin,
-            ),
-          ],
+                ],
+              ),
+              SpinButton(
+                onPressed: spin,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -12,6 +12,7 @@ class CasinoKidzAppBar extends ConsumerWidget implements PreferredSizeWidget {
     User user = ref.watch(userProvider).value ?? const User();
 
     return AppBar(
+      centerTitle: true,
       title: Column(
         children: [
           Text(
